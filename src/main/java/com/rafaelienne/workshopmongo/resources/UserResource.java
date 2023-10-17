@@ -1,5 +1,6 @@
 package com.rafaelienne.workshopmongo.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.rafaelienne.workshopmongo.domain.User;
 import com.rafaelienne.workshopmongo.dto.UserDTO;
@@ -48,6 +52,21 @@ public class UserResource {
 		/*O ok é um método que instancia o ResponseEntity já com o código de resposta http
 		 que a resposta aconteceu com sucesso. O body define o corpo da resposta*/
 		return ResponseEntity.ok().body(new UserDTO(user));
+	}
+	
+	/*O @PostMapping indica que será usado o método http post para adicionar um usuário*/
+	@PostMapping
+	/*O método insert insere um user no banco de dados*/
+	/*O @RequestBody mostra que o objeto User vai chegar na forma de json e será desserializado na forma de objeto
+	 User no Java*/
+	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto){
+		User obj = service.fromDto(objDto);
+		obj = service.insert(obj);
+		/*Esse objeto do tipo URI é criado porque, ao se inserir um novo dado, é mais adequado retornar o código de
+		 resposta 201 (código específico do http que significa que um novo recurso foi criado*/
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(obj.getId()).toUri(); 
+		return ResponseEntity.created(uri).build();
 	}
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rafaelienne.workshopmongo.domain.User;
+import com.rafaelienne.workshopmongo.dto.UserDTO;
 import com.rafaelienne.workshopmongo.repositories.UserRepository;
 import com.rafaelienne.workshopmongo.services.exception.ObjectNotFoundException;
 
@@ -29,6 +30,16 @@ public class UserService {
 	public User findById(String id) {
 		Optional<User> obj = rep.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+	}
+	
+	/*Método que insere um objeto*/
+	public User insert(User obj) {
+		return rep.insert(obj);
+	}
+	
+	/*Método que transforma um objeto UserDTO em um User normal*/
+	public User fromDto(UserDTO u) {
+		return new User(u.getId(), u.getName(), u.getEmail());
 	}
 
 }
