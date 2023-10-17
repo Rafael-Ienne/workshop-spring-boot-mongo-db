@@ -32,9 +32,15 @@ public class UserService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
 	}
 	
-	/*Método que insere um objeto*/
+	/*Método que insere um objeto User*/
 	public User insert(User obj) {
 		return rep.insert(obj);
+	}
+	
+	/*Método que deleta um objeto User*/
+	public void delete(String id) {
+		findById(id);
+		rep.deleteById(id);
 	}
 	
 	/*Método que transforma um objeto UserDTO em um User normal*/

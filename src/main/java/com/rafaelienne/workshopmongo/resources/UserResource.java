@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,6 +68,18 @@ public class UserResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri(); 
 		return ResponseEntity.created(uri).build();
+	}
+	
+	/*O @DeleteMapping indica que será usado o método http delete para deletar um usuário*/
+	/*O delete é um end point para deletar um usuário com base no id*/
+	/*O (value = "/{id}") indica que o componente final do endereço passado na ferramenta de teste de solicitações
+	 será usado como id para fazer a requisição*/
+	@DeleteMapping(value = "/{id}")
+	/*Usa-se void em ResponseEntity porque a resposta não vai retornar nenhum corpo*/
+	public ResponseEntity<Void> delete(@PathVariable String id){
+		service.delete(id);
+		/*O .noContent() retorna o código 204 (deleção deu certo)*/
+		return ResponseEntity.noContent().build();
 	}
 	
 }
