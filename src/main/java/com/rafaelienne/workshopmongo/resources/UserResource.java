@@ -1,6 +1,7 @@
 package com.rafaelienne.workshopmongo.resources;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rafaelienne.workshopmongo.domain.User;
+import com.rafaelienne.workshopmongo.dto.UserDTO;
 import com.rafaelienne.workshopmongo.services.UserService;
 
 /*O @RestController indica que a classe será um recurso REST*/
@@ -27,11 +29,13 @@ public class UserResource {
 	@GetMapping
 	/*O ResponseEntity vai encapsular toda estrutura necessária para retornar respostas
 	http já com cabeçalhos, erros, etc*/
-	public ResponseEntity<List<User>> findAll() {
+	public ResponseEntity<List<UserDTO>> findAll() {
 		List<User> list = service.findAll();
+		/*Conversão de uma lista do tipo User para UserDTO*/
+		List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 		/*O ok é um método que instancia o ResponseEntity já com o código de resposta http
 		 que a resposta aconteceu com sucesso. O body define o corpo da resposta*/
-		return ResponseEntity.ok().body(list);
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 }
