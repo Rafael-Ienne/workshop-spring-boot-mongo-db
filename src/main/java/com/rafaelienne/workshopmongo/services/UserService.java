@@ -43,6 +43,19 @@ public class UserService {
 		rep.deleteById(id);
 	}
 	
+	/*Método que deleta um objeto User*/
+	public User update(User obj) {
+		User newObj = findById(obj.getId());
+		updateData(newObj, obj);
+		return rep.save(newObj);
+	}
+	
+	/*Método que copia os atributos do obg para o newObj*/
+	private void updateData(User newObj, User obj) {
+		newObj.setEmail(obj.getEmail());
+		newObj.setName(obj.getName());
+	}
+
 	/*Método que transforma um objeto UserDTO em um User normal*/
 	public User fromDto(UserDTO u) {
 		return new User(u.getId(), u.getName(), u.getEmail());
