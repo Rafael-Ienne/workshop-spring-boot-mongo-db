@@ -84,7 +84,7 @@ public class UserResource {
 	}
 	
 	/*O update é um end-point para atualizar um usuário com base no id. O @PutMapping indica que será 
-	 usado o método http post para atualizar dados*/
+	 usado o método http put para atualizar dados*/
 	/*O (value = "/{id}") indica que o componente final do endereço passado na ferramenta de teste de solicitações
 	 será usado como id para fazer a requisição*/
 	@PutMapping(value = "/{id}")
