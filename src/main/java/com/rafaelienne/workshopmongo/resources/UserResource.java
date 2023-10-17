@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class UserResource {
 	private UserService service;
 	
 	/*O findAll é um método que retorna todos os usuários*/
-	/*O @GetMapping indica o método http que será usado para esse end point*/
+	/*O @GetMapping indica o método http que será usado para esse end point (get)*/
 	@GetMapping
 	/*O ResponseEntity vai encapsular toda estrutura necessária para retornar respostas
 	http já com cabeçalhos, erros, etc*/
@@ -36,6 +37,17 @@ public class UserResource {
 		/*O ok é um método que instancia o ResponseEntity já com o código de resposta http
 		 que a resposta aconteceu com sucesso. O body define o corpo da resposta*/
 		return ResponseEntity.ok().body(listDto);
+	}
+	
+	/*O findById é um método que retorna um usuário com base no id*/
+	/*O @GetMapping indica o método http que será usado para esse end point (get)*/
+	@GetMapping(value = "/{id}")
+	/*O @PathVariable mostra que o id passado na url deve "casar" com o id como parâmetro*/
+	public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+		User user = service.findById(id);
+		/*O ok é um método que instancia o ResponseEntity já com o código de resposta http
+		 que a resposta aconteceu com sucesso. O body define o corpo da resposta*/
+		return ResponseEntity.ok().body(new UserDTO(user));
 	}
 	
 }
