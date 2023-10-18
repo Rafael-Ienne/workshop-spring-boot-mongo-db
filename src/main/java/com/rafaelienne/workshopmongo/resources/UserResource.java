@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.rafaelienne.workshopmongo.domain.Post;
 import com.rafaelienne.workshopmongo.domain.User;
 import com.rafaelienne.workshopmongo.dto.UserDTO;
 import com.rafaelienne.workshopmongo.services.UserService;
@@ -92,6 +93,17 @@ public class UserResource {
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
+	}
+	
+	/*O findPosts é um método que retorna os posts de um usuário com base no id*/
+	/*O @GetMapping indica o método http que será usado para esse end point (get)*/
+	@GetMapping(value = "/{id}/posts")
+	/*O @PathVariable mostra que o id passado na url deve "casar" com o id como parâmetro*/
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+		User user = service.findById(id);
+		/*O ok é um método que instancia o ResponseEntity já com o código de resposta http
+		 que a resposta aconteceu com sucesso. O body define o corpo da resposta*/
+		return ResponseEntity.ok().body(user.getPosts());
 	}
 	
 }

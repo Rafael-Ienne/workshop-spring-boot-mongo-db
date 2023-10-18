@@ -22,9 +22,7 @@ public class User implements Serializable{
 	private String id;
 	private String name;
 	private String email;
-	/*A annotatio @DBRef indica que o atributo posts está referenciando outra coleção
-	 do MongoDB*/
-	/*O atributo posts faz referência aos id's dos posts feitos pelo autor*/
+	/*O atributo posts faz referência aos id's dos posts feitos pelo autor por @DBRef*/
 	/*O parâmetro o (lazy = true) evita que todos os posts do usuário sejam carregados
 	 automaticamente ao se fazer a consulta de um usuário. Assim, os posts serão
 	 carregados apenas se eles forem acessados*/
