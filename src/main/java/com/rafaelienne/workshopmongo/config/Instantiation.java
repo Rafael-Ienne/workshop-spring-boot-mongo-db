@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import com.rafaelienne.workshopmongo.domain.Post;
 import com.rafaelienne.workshopmongo.domain.User;
 import com.rafaelienne.workshopmongo.dto.AuthorDTO;
+import com.rafaelienne.workshopmongo.dto.CommentDTO;
 import com.rafaelienne.workshopmongo.repositories.PostRepository;
 import com.rafaelienne.workshopmongo.repositories.UserRepository;
 
@@ -47,6 +48,10 @@ public class Instantiation implements CommandLineRunner{
 		Post post1 = new Post(null, sdf.parse("21/03/2023"), "Partiu viagem!", "Vou viajar para São Paulo. Abraços!", new AuthorDTO(maria));
 		Post post2 = new Post(null, sdf.parse("22/03/2023"),  "Bom dia", "Acordei feliz hoje!", new AuthorDTO(maria));
 		
+		post1.getComments().add(new CommentDTO("Aproveite!", sdf.parse("21/03/2023"), new AuthorDTO(alex)));
+		post1.getComments().add(new CommentDTO("Boa viagem, mano!", sdf.parse("22/03/2023"), new AuthorDTO(bob)));
+		post2.getComments().add(new CommentDTO("Tenha um ótimo dia!", sdf.parse("22/03/2023"), new AuthorDTO(alex)));
+		
 		/*Salva os posts no MongoDB*/
 		postRepository.saveAll(Arrays.asList(post1, post2));
 		
@@ -56,6 +61,7 @@ public class Instantiation implements CommandLineRunner{
 		
 		/*Salva o User maria após fzer referências aos seus posts*/
 		userRepository.save(maria);
+		
 	}
 
 }
