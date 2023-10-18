@@ -1,5 +1,6 @@
 package com.rafaelienne.workshopmongo.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,18 @@ public class PostService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
 	}
 	
+	/*Método que encontra um post com base em um texto que deve aparecer no título*/
 	public List<Post> findByTitle(String title){
 		return rep.searchTitle(title);
+	}
+	
+	/*Método que encontra posts contendo um dado string em qualquer lugar (no título,
+	 corpo ou comentários) e em um dado intervalo de datas*/
+	public List<Post> fullSearch(String title, Date minDate, Date maxDate){
+		/*Transformação que permite comparar até 24 horas depois do maxDate, porque o
+		maxDate originalmente corresponde a meia-noite do dia especificado*/
+		maxDate = new Date(maxDate.getTime() + 24 * 60 * 60 * 1000);
+		return rep.fullSearch(title, minDate, maxDate);
 	}
 
 }

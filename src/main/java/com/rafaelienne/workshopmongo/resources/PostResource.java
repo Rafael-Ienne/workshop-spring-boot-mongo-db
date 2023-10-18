@@ -1,5 +1,6 @@
 package com.rafaelienne.workshopmongo.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class PostResource {
 		return ResponseEntity.ok().body(post);
 	}
 	
-	/*O findById é um método que retorna um post com base no id*/
+	/*O findByTitle é um método que retorna um post com base no texto passado como parâmetro*/
 	/*O @GetMapping indica o método http que será usado para esse end point (get)*/
 	@GetMapping(value = "/titlesearch")
 	/*O @RequestParam(value = "text", defaultValue = "" mostra o nome do parâmetro que será passado na URI*/
@@ -48,4 +49,20 @@ public class PostResource {
 		 que a resposta aconteceu com sucesso. O body define o corpo da resposta*/
 		return ResponseEntity.ok().body(list);
 	}
+	
+	/*O fullSearch é um método que retorna um post com base no texto e datas passados como parâmetros*/
+	/*O @GetMapping indica o método http que será usado para esse end point (get) e o end point*/
+	@GetMapping(value = "/fullsearch")
+	/*O @RequestParam(value = "text", defaultValue = "" mostra o nome do parâmetro que será passado na URI*/
+ 	public ResponseEntity<List<Post>> fullSearch(
+ 			@RequestParam(value="text", defaultValue="") String text,
+ 			@RequestParam(value="minDate", defaultValue="") String minDate,
+ 			@RequestParam(value="maxDate", defaultValue="") String maxDate) {
+		text = URL.decodeParam(text);
+		Date min = URL.convertDate(minDate, new Date(0L));
+		Date max = URL.convertDate(maxDate, new Date());
+		List<Post> list = service.fullSearch(text, min, max);
+		return ResponseEntity.ok().body(list);
+	}
 }
+
